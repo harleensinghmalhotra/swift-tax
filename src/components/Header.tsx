@@ -4,123 +4,106 @@ import { Menu, X, Phone } from 'lucide-react';
 const navLinks = [
   { name: 'Services', href: '#services' },
   { name: 'About', href: '#about' },
-  { name: 'Blog', href: '#', onClick: (e: React.MouseEvent<HTMLAnchorElement>) => e.preventDefault() },
   { name: 'Contact', href: '#contact' },
 ];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const fn = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <a href="#" className="flex items-center">
-            <div className={`rounded-lg p-1.5 transition-all ${isScrolled ? '' : 'bg-white shadow-lg'}`}>
-              <img
-                src="/US_TAX_SERVICES_LOGO.png"
-                alt="Swift Tax Service"
-                className="h-10 md:h-12 w-auto"
-              />
-            </div>
+    <>
+      {/* Announcement bar */}
+      <div style={{ background: '#003512' }}
+        className="text-white text-center py-2.5 px-4 text-xs font-semibold tracking-wide">
+        🧾 2026 Tax Season — Free Consultation Available &nbsp;·&nbsp;
+        <a href="#contact" className="underline hover:text-[#C9A84C] transition-colors duration-200">
+          Schedule Today
+        </a>
+      </div>
+
+      <header
+        className="sticky top-0 z-50 bg-white transition-all duration-300"
+        style={{ boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.12)' : '0 1px 0 #e5e2d4' }}
+      >
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 flex items-center justify-between h-20">
+          {/* Logo with subtle hover scale */}
+          <a href="#" className="flex-shrink-0 transition-transform duration-300 hover:scale-105 origin-left">
+            <img src="/New Logo.png" alt="Swift Tax Service" className="h-16 w-auto" />
           </a>
 
-          <nav className="hidden md:flex items-center gap-8 ml-auto mr-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={link.onClick}
-                className={`font-medium transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-fuchsia-600'
-                    : 'text-white hover:text-fuchsia-300'
-                }`}
-              >
-                {link.name}
+          {/* Nav with underline-draw animation */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map(l => (
+              <a key={l.name} href={l.href}
+                className="nav-link text-sm font-bold text-[#262626] hover:text-[#003512] transition-colors duration-200">
+                {l.name}
               </a>
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-6">
-            <a
-              href="tel:3173221040"
-              className={`flex items-center gap-2 font-medium transition-colors ${
-                isScrolled ? 'text-gray-700' : 'text-white'
-              }`}
-            >
-              <Phone className="w-5 h-5" />
-              <span>(317) 322-1040</span>
+          <div className="hidden md:flex items-center gap-5">
+            <a href="tel:3173221040"
+              className="flex items-center gap-1.5 text-sm font-bold text-[#003512] hover:text-[#003512] transition-all duration-200 hover:scale-105">
+              <Phone className="w-4 h-4" />
+              (317) 322-1040
             </a>
-            <a
-              href="#contact"
-              className="px-5 py-2.5 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white rounded-lg font-semibold shadow-lg shadow-fuchsia-500/30 hover:shadow-fuchsia-500/50 transition-all hover:-translate-y-0.5"
-            >
+            <a href="#contact"
+              className="btn-shimmer px-6 py-2.5 rounded-full text-sm font-extrabold text-white transition-all duration-250 hover:scale-105 active:scale-95"
+              style={{
+                background: '#003512',
+                boxShadow: '0 4px 14px rgba(0,53,18,0.28)',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = '#003512';
+                el.style.boxShadow = '0 6px 22px rgba(0,53,18,0.38)';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = '#003512';
+                el.style.boxShadow = '0 4px 14px rgba(0,53,18,0.28)';
+              }}>
               Get Started
             </a>
           </div>
 
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`md:hidden p-2 rounded-lg transition-colors ${
-              isScrolled ? 'text-gray-700' : 'text-white'
-            }`}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <button onClick={() => setOpen(!open)}
+            className="md:hidden p-2 text-[#003512] transition-transform duration-200 hover:scale-110 active:scale-90">
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-      </div>
 
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t shadow-xl">
-          <div className="container mx-auto px-4 py-6 space-y-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.onClick) link.onClick(e);
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block text-gray-700 hover:text-fuchsia-600 font-medium py-2"
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="pt-4 border-t space-y-4">
-              <a
-                href="tel:3173221040"
-                className="flex items-center gap-2 text-gray-700 font-medium"
-              >
-                <Phone className="w-4 h-4" />
-                (317) 322-1040
-              </a>
-              <a
-                href="#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block w-full text-center px-5 py-3 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white rounded-lg font-semibold"
-              >
-                Get Started
-              </a>
+        {/* Mobile menu */}
+        {open && (
+          <div className="md:hidden bg-white border-t border-gray-100 anim-fade-up" style={{ animationDuration: '0.2s' }}>
+            <div className="max-w-7xl mx-auto px-5 py-6 space-y-4">
+              {navLinks.map((l, i) => (
+                <a key={l.name} href={l.href} onClick={() => setOpen(false)}
+                  className={`block text-[#262626] font-bold py-1 hover:text-[#003512] hover:translate-x-1 transition-all duration-200 anim-fade-up delay-${i + 1}`}>
+                  {l.name}
+                </a>
+              ))}
+              <div className="pt-4 border-t border-gray-100 space-y-3">
+                <a href="tel:3173221040" className="flex items-center gap-2 text-[#003512] font-bold hover:scale-105 transition-transform">
+                  <Phone className="w-4 h-4" /> (317) 322-1040
+                </a>
+                <a href="#contact" onClick={() => setOpen(false)}
+                  className="btn-shimmer block w-full text-center py-3 rounded-full font-extrabold text-white active:scale-95 transition-transform"
+                  style={{ background: '#003512' }}>
+                  Get Started
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </header>
+        )}
+      </header>
+    </>
   );
 }

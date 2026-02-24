@@ -1,314 +1,182 @@
 import { useState, FormEvent } from 'react';
-import { Send, CheckCircle, Phone, MapPin, Clock, Mail, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle, Phone, MapPin, Clock, Mail, Zap } from 'lucide-react';
 
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  message: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  phone?: string;
-  service?: string;
-}
+interface FormData { name: string; email: string; phone: string; service: string; message: string; }
+interface FormErrors { name?: string; email?: string; phone?: string; service?: string; }
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
-  });
+  const [form, setForm] = useState<FormData>({ name: '', email: '', phone: '', service: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^[\d\s\-\(\)]+$/.test(formData.phone) || formData.phone.replace(/\D/g, '').length < 10) {
-      newErrors.phone = 'Please enter a valid phone number';
-    }
-
-    if (!formData.service) {
-      newErrors.service = 'Please select a service';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validate = (): boolean => {
+    const e: FormErrors = {};
+    if (!form.name.trim()) e.name = 'Name is required';
+    if (!form.email.trim()) e.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email';
+    if (!form.phone.trim()) e.phone = 'Phone is required';
+    else if (form.phone.replace(/\D/g, '').length < 10) e.phone = 'Enter a valid phone number';
+    if (!form.service) e.service = 'Please select a service';
+    setErrors(e);
+    return !Object.keys(e).length;
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    if (!validate()) return;
+    setSending(true);
+    await new Promise(r => setTimeout(r, 1500));
+    setSending(false); setSent(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
+    setForm(p => ({ ...p, [name]: value }));
+    if (errors[name as keyof FormErrors]) setErrors(p => ({ ...p, [name]: undefined }));
   };
 
-  const contactInfo = [
-    {
-      icon: Phone,
-      title: 'Phone',
-      content: '(317) 322-1040',
-      href: 'tel:3173221040',
-    },
-    {
-      icon: Mail,
-      title: 'Email',
-      content: 'info@swifttaxservice.com',
-      href: 'mailto:info@swifttaxservice.com',
-    },
-    {
-      icon: MapPin,
-      title: 'Location',
-      content: '4305 E 38th St, Indianapolis, IN',
-      href: null,
-    },
-    {
-      icon: Clock,
-      title: 'Hours',
-      content: 'Mon-Fri 9AM-6PM, Sat 10AM-2PM',
-      href: null,
-    },
+  const info = [
+    { icon: Phone, label: 'Phone', value: '(317) 322-1040', href: 'tel:3173221040' },
+    { icon: Mail, label: 'Email', value: 'info@swifttaxservice.com', href: 'mailto:info@swifttaxservice.com' },
+    { icon: MapPin, label: 'Location', value: '4305 E 38th St, Indianapolis, IN', href: null },
+    { icon: Clock, label: 'Hours', value: 'Mon–Fri 9AM–6PM  ·  Sat 10–2PM', href: null },
   ];
 
-  return (
-    <section id="contact" className="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl" />
-      </div>
+  const inputCls = (field: keyof FormErrors) =>
+    `input-animated w-full px-4 py-3.5 rounded-xl border outline-none text-sm font-medium text-[#003512] bg-white ` +
+    (errors[field]
+      ? 'border-red-400 bg-red-50'
+      : 'border-[#D6DAE0] focus:border-[#003512] hover:border-[#003512]/40');
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 text-sm font-semibold mb-4">
-            Get In Touch
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Get Started?
+  return (
+    <section id="contact" style={{ background: '#003512' }} className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.025]"
+        style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
+        <div className="mb-14 anim-fade-up">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <div className="bar-grow h-px w-8 bg-[#C9A84C]" />
+            <p className="text-xs font-extrabold tracking-[0.25em] uppercase text-[#C9A84C]">Get In Touch</p>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#F6F4E9] mb-3 leading-tight">
+            Ready to get your<br />maximum refund?
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Fill out the form below and we'll contact you within 24 hours to discuss your tax needs.
+          <p style={{ color: 'rgba(246,244,233,0.55)' }} className="max-w-lg text-base">
+            Fill out the form and we'll reach out within 24 hours. No obligation.
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-12">
-          <div className="lg:col-span-2 space-y-4">
-            {contactInfo.map((item, index) => (
-              <div
-                key={index}
-                className="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-fuchsia-500/20">
-                    <item.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white mb-1">{item.title}</h3>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-gray-400 hover:text-fuchsia-400 transition-colors"
-                      >
-                        {item.content}
-                      </a>
-                    ) : (
-                      <p className="text-gray-400">{item.content}</p>
-                    )}
-                  </div>
+        <div className="grid lg:grid-cols-5 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-2 space-y-3 anim-fade-left delay-1">
+            {info.map((item, i) => (
+              <div key={i}
+                className={`card-hover rounded-2xl p-5 flex items-start gap-4 group anim-fade-up delay-${i + 1}`}
+                style={{ background: 'rgba(246,244,233,0.05)', border: '1px solid rgba(246,244,233,0.10)', boxShadow: '0 2px 12px rgba(0,0,0,0.15)' }}>
+                <div className="icon-box w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(201,168,76,0.15)' }}>
+                  <item.icon className="w-5 h-5 text-[#C9A84C]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold tracking-widest uppercase text-[#C9A84C] mb-0.5">{item.label}</p>
+                  {item.href
+                    ? <a href={item.href} style={{ color: 'rgba(246,244,233,0.75)' }} className="text-sm hover:text-[#F6F4E9] transition-colors">{item.value}</a>
+                    : <p style={{ color: 'rgba(246,244,233,0.75)' }} className="text-sm">{item.value}</p>}
                 </div>
               </div>
             ))}
 
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30">
-              <div className="flex items-start gap-4">
-                <MessageSquare className="w-8 h-8 text-green-400 flex-shrink-0" />
+            {/* Quick response */}
+            <div className="card-hover rounded-2xl p-5 mt-2"
+              style={{ background: '#C9A84C', boxShadow: '0 8px 28px rgba(201,168,76,0.30)' }}>
+              <div className="flex items-start gap-3">
+                <Zap className="w-6 h-6 text-[#003512] flex-shrink-0 mt-0.5 transition-transform duration-300 hover:rotate-12" />
                 <div>
-                  <h3 className="font-semibold text-white mb-2">Quick Response Guarantee</h3>
-                  <p className="text-gray-300 text-sm">
-                    We respond to all inquiries within 24 hours. For urgent matters, please call us directly.
+                  <p className="font-extrabold text-[#003512] text-sm mb-1">Quick Response Guarantee</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(0,53,18,0.65)' }}>
+                    We respond within 24 hours. Call us for urgent help.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl">
-              {isSubmitted ? (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="w-10 h-10 text-green-600" />
+          {/* Form */}
+          <div className="lg:col-span-3 rounded-2xl p-8 md:p-10 bg-[#F6F4E9] anim-fade-right delay-2"
+            style={{ boxShadow: '0 16px 48px rgba(0,0,0,0.25)' }}>
+            {sent ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 anim-fade-up"
+                  style={{ background: 'rgba(0,53,18,0.08)' }}>
+                  <CheckCircle className="w-10 h-10 text-[#003512]" />
+                </div>
+                <h3 className="text-2xl font-extrabold text-[#003512] mb-2 anim-fade-up delay-1">Message sent!</h3>
+                <p className="text-[#6E6E6E] mb-8 anim-fade-up delay-2">We'll be in touch very soon.</p>
+                <button onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', service: '', message: '' }); }}
+                  className="text-sm font-bold text-[#003512] underline underline-offset-2 hover:text-[#003512] transition-colors anim-fade-up delay-3">
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Fields */}
+                <div className="anim-fade-up delay-1">
+                  <label className="block text-[10px] font-extrabold tracking-[0.18em] uppercase text-[#003512] mb-1.5">Full Name</label>
+                  <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="John Smith" className={inputCls('name')} />
+                  {errors.name && <p className="mt-1 text-xs text-red-600 font-semibold">{errors.name}</p>}
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-5 anim-fade-up delay-2">
+                  <div>
+                    <label className="block text-[10px] font-extrabold tracking-[0.18em] uppercase text-[#003512] mb-1.5">Email</label>
+                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="john@example.com" className={inputCls('email')} />
+                    {errors.email && <p className="mt-1 text-xs text-red-600 font-semibold">{errors.email}</p>}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                    Message Sent!
-                  </h3>
-                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                    Thank you for reaching out. We'll contact you within 24 hours to discuss your tax needs.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setFormData({ name: '', email: '', phone: '', service: '', message: '' });
-                    }}
-                    className="text-fuchsia-600 hover:text-fuchsia-700 font-semibold"
-                  >
-                    Send another message
+                  <div>
+                    <label className="block text-[10px] font-extrabold tracking-[0.18em] uppercase text-[#003512] mb-1.5">Phone</label>
+                    <input type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="(317) 555-0123" className={inputCls('phone')} />
+                    {errors.phone && <p className="mt-1 text-xs text-red-600 font-semibold">{errors.phone}</p>}
+                  </div>
+                </div>
+
+                <div className="anim-fade-up delay-3">
+                  <label className="block text-[10px] font-extrabold tracking-[0.18em] uppercase text-[#003512] mb-1.5">Service</label>
+                  <select name="service" value={form.service} onChange={handleChange} className={inputCls('service')}>
+                    <option value="">Select a service</option>
+                    <option>Individual Tax Return</option>
+                    <option>Business Tax Return</option>
+                    <option>Tax Planning</option>
+                    <option>IRS Representation</option>
+                    <option>Amended Returns</option>
+                    <option>Other</option>
+                  </select>
+                  {errors.service && <p className="mt-1 text-xs text-red-600 font-semibold">{errors.service}</p>}
+                </div>
+
+                <div className="anim-fade-up delay-4">
+                  <label className="block text-[10px] font-extrabold tracking-[0.18em] uppercase text-[#003512] mb-1.5">
+                    Message <span className="text-[#6E6E6E] normal-case font-normal tracking-normal">(optional)</span>
+                  </label>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={4}
+                    placeholder="Tell us about your tax situation…"
+                    className="input-animated w-full px-4 py-3.5 rounded-xl border border-[#D6DAE0] bg-white outline-none text-sm font-medium text-[#003512] resize-none focus:border-[#003512] transition-all hover:border-[#003512]/40" />
+                </div>
+
+                <div className="anim-fade-up delay-5">
+                  <button type="submit" disabled={sending}
+                    className="btn-shimmer w-full py-4 rounded-full font-extrabold text-base transition-all disabled:opacity-50 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95"
+                    style={{ background: '#003512', color: '#F6F4E9', boxShadow: '0 6px 20px rgba(0,53,18,0.30)' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 30px rgba(0,53,18,0.42)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 20px rgba(0,53,18,0.30)'; }}>
+                    {sending
+                      ? <><div className="w-5 h-5 border-2 border-[#F6F4E9]/30 border-t-[#F6F4E9] rounded-full animate-spin" /> Sending…</>
+                      : <><Send className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" /> Send Message</>}
                   </button>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className={`w-full px-5 py-4 border-2 rounded-xl focus:ring-0 focus:border-fuchsia-500 outline-none transition-colors text-gray-900 ${
-                        errors.name ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
-                      }`}
-                      placeholder="John Smith"
-                    />
-                    {errors.name && (
-                      <p className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>
-                    )}
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`w-full px-5 py-4 border-2 rounded-xl focus:ring-0 focus:border-fuchsia-500 outline-none transition-colors text-gray-900 ${
-                          errors.email ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
-                        }`}
-                        placeholder="john@example.com"
-                      />
-                      {errors.email && (
-                        <p className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className={`w-full px-5 py-4 border-2 rounded-xl focus:ring-0 focus:border-fuchsia-500 outline-none transition-colors text-gray-900 ${
-                          errors.phone ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
-                        }`}
-                        placeholder="(317) 555-0123"
-                      />
-                      {errors.phone && (
-                        <p className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Service Interested In
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className={`w-full px-5 py-4 border-2 rounded-xl focus:ring-0 focus:border-fuchsia-500 outline-none transition-colors text-gray-900 bg-gray-50 ${
-                        errors.service ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <option value="">Select a service</option>
-                      <option value="Individual Tax Return">Individual Tax Return</option>
-                      <option value="Business Tax Return">Business Tax Return</option>
-                      <option value="Tax Planning">Tax Planning</option>
-                      <option value="IRS Representation">IRS Representation</option>
-                      <option value="Amended Returns">Amended Returns</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    {errors.service && (
-                      <p className="mt-2 text-sm text-red-600 font-medium">{errors.service}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Message <span className="text-gray-400 font-normal">(Optional)</span>
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={4}
-                      className="w-full px-5 py-4 border-2 border-gray-200 bg-gray-50 rounded-xl focus:ring-0 focus:border-fuchsia-500 outline-none transition-colors resize-none text-gray-900 hover:border-gray-300"
-                      placeholder="Tell us about your tax needs..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-5 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-fuchsia-500/30 hover:shadow-fuchsia-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        Send Message
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
