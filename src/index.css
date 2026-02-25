@@ -5,9 +5,8 @@
 /* ─── Brand CSS vars ─────────────────────────────── */
 :root {
   --forest: #003512;
-  --forest-mid: #003512;
-  --gold: #C9A84C;
-  --gold-lt: #D4AF5A;
+  --vivid: #1DAF5A;
+  --vivid-hover: #168a48;
   --cream: #F6F4E9;
   --ink: #000000;
   --ink-soft: #262626;
@@ -266,7 +265,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: rgba(201, 168, 76, 0.4);
+  background: rgba(56, 126, 91, 0.4);
   animation: pulse-ring 2.5s ease-out infinite;
   pointer-events: none;
 }
@@ -293,7 +292,7 @@ body {
 
 .input-animated:focus {
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0, 53, 18, 0.12) !important;
+  box-shadow: 0 4px 16px rgba(56, 126, 91, 0.12) !important;
 }
 
 /* ─── Stat card number pop ───────────────────────── */

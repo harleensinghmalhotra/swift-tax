@@ -1,94 +1,91 @@
-import { CheckCircle, Star, Award, Clock, Users } from 'lucide-react';
+import { ShieldCheck, Users, Trophy, Star } from 'lucide-react';
 
-const benefits = [
-  'Personalized attention to every tax return',
-  'Year-round availability for questions',
-  'Competitive pricing — no hidden fees',
-  'Convenient Indianapolis location',
-  'Electronic filing for faster refunds',
-  'Guaranteed accuracy with audit support',
+const achievements = [
+  { val: '15+', label: 'Years Experience', icon: <Trophy className="w-5 h-5" /> },
+  { val: '5k+', label: 'Happy Clients', icon: <Users className="w-5 h-5" /> },
+  { val: '5.0', label: 'Google Rating', icon: <Star className="w-5 h-5" /> },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+    <section id="about" className="py-24 bg-cream relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
 
-          {/* Left */}
-          <div className="anim-fade-left">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <div className="bar-grow h-px w-8 bg-[#003512]" />
-              <p className="text-xs font-extrabold tracking-[0.25em] uppercase text-[#003512]">About Us</p>
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left: Image / Visuals */}
+          <div className="relative anim-fade-left">
+            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
+                alt="Founder"
+                className="w-full h-[600px] object-cover transition-transform duration-700 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/60 to-transparent" />
+
+              <div className="absolute bottom-8 left-8 right-8 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+                <p className="text-white font-extrabold text-xl mb-1">Expert Led Service</p>
+                <p className="text-white/70 text-sm">Our team brings decades of collective tax expertise to every filing.</p>
+              </div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#003512] leading-tight mb-6">
-              Indianapolis' trusted tax partner since day one
-            </h2>
-            <p className="text-[#6E6E6E] leading-relaxed mb-5">
-              Founded by John, Swift Tax Service has been proudly serving Indianapolis families and businesses for over 15 years. We believe you deserve accurate, affordable tax help — with a personal touch you won't find at a big chain.
-            </p>
-            <p className="text-[#6E6E6E] leading-relaxed mb-10">
-              Our commitment to excellence and staying current with ever-changing tax law means every client gets the maximum refund — guaranteed.
-            </p>
 
-            {/* Stat trio */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { icon: Award, label: 'Licensed', sub: 'Tax Pro' },
-                { icon: Clock, label: '24hr', sub: 'Turnaround' },
-                { icon: Users, label: '5,000+', sub: 'Clients Served' },
-              ].map((item, i) => (
-                <div key={i}
-                  className={`card-hover rounded-2xl p-5 text-center border border-[#E5E2D4] group anim-fade-up delay-${i + 2}`}
-                  style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                  <div className="icon-box w-10 h-10 rounded-xl bg-[#003512] flex items-center justify-center mx-auto mb-3">
-                    <item.icon className="w-5 h-5 text-[#C9A84C]" />
+            {/* Abstract elements */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-vivid/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-forest/5 rounded-full blur-3xl" />
+          </div>
+
+          {/* Right: Content */}
+          <div className="anim-fade-right">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-10 bg-vivid" />
+              <p className="text-xs font-extrabold tracking-[0.25em] uppercase text-vivid">Why Swift Tax Service</p>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-extrabold text-forest leading-tight mb-8">
+              Indianapolis' trusted tax partner <br />
+              <span className="text-vivid/80 font-bold text-3xl md:text-4xl">since day one.</span>
+            </h2>
+
+            <div className="space-y-6 mb-12">
+              <p className="text-lg text-ink-soft/70 leading-relaxed">
+                At Swift Tax Service, we believe that professional tax preparation should be
+                accessible, accurate, and stress-free. Our team of local experts in Indianapolis
+                is dedicated to maximizing your returns while ensuring total compliance.
+              </p>
+              <p className="text-lg text-ink-soft/70 leading-relaxed">
+                We're not just another tax office; we're your year-round financial advocates,
+                providing the same high-end expertise you'd expect from a major firm with
+                the heart of a local business.
+              </p>
+            </div>
+
+            {/* Achievements Strip */}
+            <div className="grid grid-cols-3 gap-6 mb-12">
+              {achievements.map((a, i) => (
+                <div key={i} className="flex flex-col gap-2 group cursor-default">
+                  <div className="w-10 h-10 rounded-xl bg-forest/5 flex items-center justify-center text-forest transition-colors group-hover:bg-vivid group-hover:text-white">
+                    {a.icon}
                   </div>
-                  <p className="font-extrabold text-[#003512] text-sm">{item.label}</p>
-                  <p className="text-[#6E6E6E] text-xs mt-0.5">{item.sub}</p>
+                  <div>
+                    <p className="text-xl font-extrabold text-forest">{a.val}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-ink-soft/40">{a.label}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              {['IRS Authorized E-file Provider', 'Maximum Refund Guarantee', 'Audit Support Inclusion'].map(t => (
+                <div key={t} className="flex items-center gap-3 group px-4 py-3 rounded-xl hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-100">
+                  <div className="w-5 h-5 rounded-full bg-vivid/10 flex items-center justify-center text-vivid">
+                    <ShieldCheck className="w-3 h-3" />
+                  </div>
+                  <span className="text-sm font-bold text-ink-soft">{t}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right card */}
-          <div
-            className="card-hover rounded-2xl p-9 border border-[#E5E2D4] anim-fade-right"
-            style={{ background: '#F6F4E9', boxShadow: '0 8px 32px rgba(0,0,0,0.09)' }}>
-
-            {/* Stars */}
-            <div className="flex items-center gap-2 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i}
-                  className={`w-5 h-5 text-[#C9A84C] fill-[#C9A84C] transition-transform duration-200 hover:scale-125 delay-${i}`} />
-              ))}
-              <span className="text-sm text-[#6E6E6E] font-semibold ml-1">5.0 · Google Reviews</span>
-            </div>
-
-            <h3 className="text-xl font-extrabold text-[#003512] mb-6">Why clients keep coming back</h3>
-
-            <ul className="space-y-3.5">
-              {benefits.map((b, i) => (
-                <li key={i} className={`check-item flex items-start gap-3 anim-fade-up delay-${i + 1}`}>
-                  <CheckCircle className="w-5 h-5 text-[#C9A84C] flex-shrink-0 mt-0.5 transition-transform duration-200 hover:scale-125" />
-                  <span className="text-sm text-[#262626] leading-relaxed">{b}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Founder */}
-            <div className="mt-8 pt-7 border-t border-[#D6DAE0] flex items-center gap-4">
-              <div
-                className="w-14 h-14 rounded-full flex items-center justify-center font-extrabold text-lg text-[#C9A84C] flex-shrink-0 transition-transform duration-300 hover:scale-110 cursor-default"
-                style={{ background: '#003512', boxShadow: '0 4px 14px rgba(0,53,18,0.25)' }}>
-                J
-              </div>
-              <div>
-                <p className="font-extrabold text-[#003512]">John</p>
-                <p className="text-xs text-[#6E6E6E]">Founder & Lead Tax Professional</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

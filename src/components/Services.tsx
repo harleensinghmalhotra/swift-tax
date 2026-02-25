@@ -1,176 +1,173 @@
-import { FileText, Building2, ShieldCheck, LineChart, FileEdit, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { FileText, Users, MapPin, Calculator, ShieldCheck, Zap, Sparkles, ArrowRight } from 'lucide-react';
 
 const plans = [
   {
-    num: '01', tag: 'INDIVIDUAL FILING',
+    num: '01',
+    tag: 'Individual Filing',
     title: 'File on your own — with expert backup',
     desc: 'Guided step-by-step filing with a dedicated expert available whenever you need one.',
     features: ['Federal & State Filing', 'Deduction Optimizer', 'E-File — Fast Refunds'],
-    icon: FileText, badge: null,
+    icon: <FileText className="w-6 h-6" />,
+    featured: false
   },
   {
-    num: '02', tag: 'FULL SERVICE',
+    num: '02',
+    tag: 'Full Service',
     title: 'Stay home. We handle everything.',
     desc: 'A dedicated tax pro completes your return from start to finish — you just review and sign.',
     features: ['LLC & S-Corp Returns', 'Quarterly Estimates', 'Payroll Tax Support'],
-    icon: Building2, featured: true, badge: 'Most Popular',
+    icon: <Calculator className="w-6 h-6" />,
+    badge: 'Most Popular',
+    featured: true
   },
   {
-    num: '03', tag: 'IN-PERSON APPOINTMENT',
+    num: '03',
+    tag: 'In-Person Appointment',
     title: 'Face-to-face with a local expert',
     desc: 'Come into our Indianapolis office and get personalized attention from a seasoned pro.',
     features: ['Year-Round Support', 'Audit Protection', 'IRS Representation'],
-    icon: ShieldCheck, badge: null,
-  },
+    icon: <Users className="w-6 h-6" />,
+    featured: false
+  }
 ];
 
-const extras = [
-  { icon: LineChart, title: 'Tax Planning', desc: 'Year-round strategy to keep more of your money.' },
-  { icon: ShieldCheck, title: 'IRS Representation', desc: 'We handle audits and IRS notices on your behalf.' },
-  { icon: FileEdit, title: 'Amended Returns', desc: 'Fix past filings and recover missed refunds.' },
+const subServices = [
+  { title: 'Tax Planning', desc: 'Year-round strategies to lower your liability.' },
+  { title: 'IRS Representation', desc: 'We handle audits and notifications on your behalf.' },
+  { title: 'Bookkeeping', desc: 'Precise financial record maintenance for small businesses.' }
 ];
 
 export default function Services() {
   return (
-    <section id="services" style={{ background: '#F6F4E9' }} className="py-24">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8">
+    <section id="services" className="py-24 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
 
         {/* Header */}
-        <div className="mb-14 anim-fade-up">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="bar-grow h-px w-8 bg-[#003512]" />
-            <p className="text-xs font-extrabold tracking-[0.25em] uppercase text-[#003512]">Our Services</p>
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px w-10 bg-vivid" />
+            <p className="text-xs font-extrabold tracking-[0.25em] uppercase text-vivid">Professional Services</p>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#003512] leading-tight max-w-2xl">
-            File your way — every option covered
+          <h2 className="text-4xl md:text-5xl font-extrabold text-forest leading-tight max-w-2xl tracking-tight">
+            Comprehensive tax solutions<br />
+            <span className="text-vivid/80 font-bold">for every situation.</span>
           </h2>
         </div>
 
-        {/* Plan cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        {/* Main Plans */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
           {plans.map((p, i) => (
             <div key={i}
-              className={`card-hover rounded-3xl flex flex-col relative overflow-hidden group anim-fade-up delay-${i + 1}`}
-              style={p.featured
-                ? { background: '#003512', boxShadow: '0 20px 60px rgba(0,53,18,0.32)' }
-                : { background: '#fff', border: '1px solid #E5E2D4', boxShadow: '0 4px 16px rgba(0,0,0,0.07)' }}>
+              className={`card-hover rounded-[2.5rem] flex flex-col relative overflow-hidden group shadow-card anim-fade-up`}
+              style={{
+                background: p.featured ? '#003512' : '#fff',
+                border: p.featured ? 'none' : '1px solid #E5E2D4',
+                animationDelay: `${i * 0.1}s`
+              }}>
 
-              {/* Accent bar — grows on hover via group */}
-              <div className="h-1 w-full rounded-t-3xl transition-all duration-300 group-hover:h-1.5"
-                style={{ background: p.featured ? '#C9A84C' : '#003512' }} />
+              {/* Top Accent line */}
+              <div className={`h-1.5 w-full transition-all duration-300 group-hover:h-2 ${p.featured ? 'bg-vivid' : 'bg-forest'
+                }`} />
 
-              {/* Badge */}
-              {p.badge && (
-                <div className="absolute top-5 right-5">
-                  <span className="badge-ring inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider"
-                    style={{ background: '#C9A84C', color: '#003512' }}>
-                    <Sparkles className="w-2.5 h-2.5" />
-                    {p.badge}
-                  </span>
-                </div>
-              )}
+              <div className="p-8 lg:p-10 flex flex-col flex-1">
+                {/* Badge if exists */}
+                {p.badge && (
+                  <div className="mb-6">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider bg-vivid text-forest uppercase">
+                      <Sparkles className="w-3 h-3" />
+                      {p.badge}
+                    </span>
+                  </div>
+                )}
 
-              <div className="p-7 flex flex-col flex-1">
-                {/* Num + Tag */}
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl font-extrabold leading-none transition-all duration-300 group-hover:scale-110 origin-left"
-                    style={{ color: p.featured ? 'rgba(201,168,76,0.25)' : 'rgba(0,53,18,0.12)' }}>
+                {/* Step + Tag badge */}
+                <div className="flex items-center gap-3 mb-8">
+                  <span className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-extrabold transition-transform duration-300 group-hover:scale-110 ${p.featured ? 'bg-vivid text-forest' : 'bg-forest text-white'
+                    }`}>
                     {p.num}
                   </span>
-                  <span className="text-[10px] font-extrabold tracking-[0.2em] uppercase border-b pb-0.5"
-                    style={{
-                      color: p.featured ? '#C9A84C' : '#003512',
-                      borderColor: p.featured ? 'rgba(201,168,76,0.3)' : 'rgba(0,53,18,0.2)',
-                    }}>
+                  <span className={`text-[11px] font-extrabold tracking-[0.2em] uppercase ${p.featured ? 'text-vivid' : 'text-forest'
+                    }`}>
                     {p.tag}
                   </span>
                 </div>
 
-                {/* Icon */}
-                <div className="icon-box w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                  style={p.featured ? { background: 'rgba(201,168,76,0.15)' } : { background: '#F0EDD8' }}>
-                  <p.icon className="w-6 h-6 transition-transform duration-300 group-hover:scale-110"
-                    style={{ color: p.featured ? '#C9A84C' : '#003512' }} />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${p.featured ? 'bg-white/10 text-vivid' : 'bg-forest/5 text-forest'
+                  }`}>
+                  {p.icon}
                 </div>
 
-                {/* Text */}
-                <h3 className="text-xl font-extrabold leading-snug mb-3"
-                  style={{ color: p.featured ? '#F6F4E9' : '#003512' }}>
+                <h3 className={`text-2xl font-extrabold mb-4 leading-tight ${p.featured ? 'text-white' : 'text-forest'
+                  }`}>
                   {p.title}
                 </h3>
-                <p className="text-sm leading-relaxed mb-7"
-                  style={{ color: p.featured ? 'rgba(246,244,233,0.52)' : '#6E6E6E' }}>
+
+                <p className={`text-sm mb-8 leading-relaxed ${p.featured ? 'text-white/60' : 'text-ink-soft/70'
+                  }`}>
                   {p.desc}
                 </p>
 
-                {/* Features — slide on hover */}
-                <ul className="space-y-3 mb-8">
-                  {p.features.map((f, j) => (
-                    <li key={j} className="check-item flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-110"
-                        style={p.featured ? { background: 'rgba(201,168,76,0.18)' } : { background: '#F0EDD8' }}>
-                        <Check className="w-3 h-3" style={{ color: p.featured ? '#C9A84C' : '#003512' }} />
+                <div className="space-y-3.5 mb-10 mt-auto">
+                  {p.features.map(f => (
+                    <div key={f} className="flex items-center gap-3 group/item transition-transform duration-200 hover:translate-x-1">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${p.featured ? 'bg-vivid/20 text-vivid' : 'bg-forest/10 text-forest'
+                        }`}>
+                        <ShieldCheck className="w-3 h-3" />
                       </div>
-                      <span className="text-sm font-semibold"
-                        style={{ color: p.featured ? 'rgba(246,244,233,0.80)' : '#262626' }}>
-                        {f}
-                      </span>
-                    </li>
+                      <span className={`text-sm font-bold ${p.featured ? 'text-white/80' : 'text-ink-soft'
+                        }`}>{f}</span>
+                    </div>
                   ))}
-                </ul>
-
-                {/* CTA button */}
-                <div className="mt-auto">
-                  <button
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="btn-shimmer w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 group/btn hover:gap-3 active:scale-95"
-                    style={p.featured
-                      ? { background: '#C9A84C', color: '#003512', boxShadow: '0 4px 14px rgba(201,168,76,0.30)' }
-                      : { background: '#003512', color: '#F6F4E9' }}>
-                    Get Started
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
-                  </button>
                 </div>
+
+                <button className={`w-full py-4 rounded-2xl font-extrabold text-sm transition-all duration-300 flex items-center justify-center gap-2 group/btn active:scale-95 ${p.featured
+                    ? 'bg-vivid text-forest hover:bg-white hover:text-forest'
+                    : 'bg-forest text-white hover:bg-vivid hover:text-forest'
+                  }`}>
+                  Get Started
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Extra services */}
-        <div className="mb-7 flex items-center gap-3">
-          <div className="h-px w-8 bg-[#003512]" />
-          <h3 className="text-xl font-extrabold text-[#003512]">Additional Services</h3>
-        </div>
-        <div className="grid md:grid-cols-3 gap-5 mb-16">
-          {extras.map((e, i) => (
-            <div key={i}
-              className={`card-hover rounded-2xl p-6 bg-white border border-[#E5E2D4] group anim-fade-up delay-${i + 4}`}
-              style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <div className="icon-box w-11 h-11 rounded-xl bg-[#003512] flex items-center justify-center mb-4">
-                <e.icon className="w-5 h-5 text-[#C9A84C] transition-transform duration-300 group-hover:scale-110" />
-              </div>
-              <h4 className="text-base font-extrabold text-[#003512] mb-1.5">{e.title}</h4>
-              <p className="text-sm text-[#6E6E6E] leading-relaxed">{e.desc}</p>
-            </div>
-          ))}
-        </div>
+        {/* Sub-services CTA strip */}
+        <div className="rounded-3xl p-1 lg:p-1.5 bg-forest/5">
+          <div className="bg-forest rounded-[2rem] p-10 lg:p-14 flex flex-col md:flex-row items-center justify-between gap-10 shadow-xl shadow-forest/20 relative overflow-hidden">
+            {/* Abstract background shape */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-vivid/10 blur-[100px] pointer-events-none" />
 
-        {/* CTA strip */}
-        <div
-          className="card-hover rounded-2xl p-10 flex flex-col md:flex-row items-center justify-between gap-6 anim-fade-up delay-5"
-          style={{ background: '#003512', boxShadow: '0 16px 48px rgba(0,53,18,0.22)' }}>
-          <div>
-            <p className="text-xl font-extrabold text-[#F6F4E9] mb-1">Not sure where to start?</p>
-            <p style={{ color: 'rgba(246,244,233,0.50)' }} className="text-sm">Book a free consultation — no obligation, no pressure.</p>
+            <div className="anim-fade-up max-w-lg">
+              <span className="text-xs font-extrabold tracking-[0.2em] uppercase text-vivid/80 mb-3 block">More Services</span>
+              <h3 className="text-3xl font-extrabold text-white mb-4">Not sure where to start?</h3>
+              <p className="text-white/50 text-sm leading-relaxed mb-8">
+                From bookkeeping to audit protection, our team of experts in Indianapolis is
+                ready to handle your unique requirements.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                {subServices.map(s => (
+                  <div key={s.title} className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-vivid mt-1.5" />
+                    <div>
+                      <p className="text-xs font-bold text-white mb-0.5">{s.title}</p>
+                      <p className="text-[10px] text-white/40">{s.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-shrink-0">
+              <button
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn-shimmer bg-white text-forest px-10 py-5 rounded-2xl font-extrabold hover:scale-105 active:scale-95 shadow-xl transition-all">
+                Book Free Consultation
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            style={{ background: '#C9A84C', color: '#003512', boxShadow: '0 4px 16px rgba(201,168,76,0.30)' }}
-            className="btn-shimmer inline-flex items-center gap-2 px-8 py-4 rounded-full font-extrabold hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap group">
-            Book Free Consultation
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-          </button>
         </div>
+
       </div>
     </section>
   );
