@@ -15,7 +15,7 @@ const links = {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] pt-32 pb-16 text-white relative overflow-hidden border-t border-white/5">
+    <footer className="bg-[#0A0A0A] pt-16 lg:pt-20 pb-16 text-white relative overflow-hidden border-t border-white/5">
       {/* Subtle brand glow to make it feel premium */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-vivid/10 to-transparent" />
 
