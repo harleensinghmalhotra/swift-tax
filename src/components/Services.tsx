@@ -1,4 +1,4 @@
-import { FileText, Users, MapPin, Calculator, ShieldCheck, Zap, Sparkles, ArrowRight } from 'lucide-react';
+import { FileText, Users, Calculator, ShieldCheck, Sparkles, ArrowRight } from 'lucide-react';
 
 const plans = [
   {
@@ -121,8 +121,8 @@ export default function Services() {
                 </div>
 
                 <button className={`w-full py-4 rounded-2xl font-extrabold text-sm transition-all duration-300 flex items-center justify-center gap-2 group/btn active:scale-95 ${p.featured
-                    ? 'bg-vivid text-forest hover:bg-white hover:text-forest'
-                    : 'bg-forest text-white hover:bg-vivid hover:text-forest'
+                  ? 'bg-vivid text-forest hover:bg-white hover:text-forest'
+                  : 'bg-forest text-white hover:bg-vivid hover:text-forest'
                   }`}>
                   Get Started
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -132,36 +132,48 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Sub-services CTA strip */}
-        <div className="rounded-3xl p-1 lg:p-1.5 bg-forest/5">
-          <div className="bg-forest rounded-[2rem] p-10 lg:p-14 flex flex-col md:flex-row items-center justify-between gap-10 shadow-xl shadow-forest/20 relative overflow-hidden">
-            {/* Abstract background shape */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-vivid/10 blur-[100px] pointer-events-none" />
+        {/* Sub-services CTA strip — Professional Overhaul */}
+        <div className="mt-24 p-1 rounded-[3rem] bg-forest/5 shadow-2xl shadow-forest/5">
+          <div className="bg-forest rounded-[2.8rem] p-10 lg:p-16 flex flex-col lg:row-span-2 lg:flex-row items-center justify-between gap-12 relative overflow-hidden text-center lg:text-left">
+            {/* High-end decorative background */}
+            <div className="absolute top-0 right-0 w-80 h-80 bg-vivid/10 blur-[120px] pointer-events-none rounded-full" />
+            <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-vivid/5 blur-[100px] pointer-events-none rounded-full" />
 
-            <div className="anim-fade-up max-w-lg">
-              <span className="text-xs font-extrabold tracking-[0.2em] uppercase text-vivid/80 mb-3 block">More Services</span>
-              <h3 className="text-3xl font-extrabold text-white mb-4">Not sure where to start?</h3>
-              <p className="text-white/50 text-sm leading-relaxed mb-8">
+            <div className="anim-fade-up max-w-2xl relative z-10">
+              <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
+                <div className="h-px w-6 bg-vivid" />
+                <span className="text-[11px] font-black tracking-[0.3em] uppercase text-vivid">More Services</span>
+              </div>
+
+              <h3 className="text-4xl lg:text-5xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+                Not sure where<br className="hidden lg:block" />
+                <span className="text-vivid">to start?</span>
+              </h3>
+
+              <p className="text-white/70 text-base lg:text-lg leading-relaxed mb-12 max-w-xl font-medium">
                 From bookkeeping to audit protection, our team of experts in Indianapolis is
-                ready to handle your unique requirements.
+                ready to handle your unique requirements with precision and care.
               </p>
-              <div className="grid grid-cols-2 gap-4">
+
+              <div className="grid sm:grid-cols-3 gap-6 lg:gap-8">
                 {subServices.map(s => (
-                  <div key={s.title} className="flex items-start gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-vivid mt-1.5" />
-                    <div>
-                      <p className="text-xs font-bold text-white mb-0.5">{s.title}</p>
-                      <p className="text-[10px] text-white/40">{s.desc}</p>
+                  <div key={s.title} className="group/item transition-all duration-300">
+                    <div className="flex lg:flex-col items-center lg:items-start gap-4 lg:gap-3">
+                      <div className="w-2 h-2 rounded-full bg-vivid shadow-[0_0_12px_rgba(204,255,0,0.6)]" />
+                      <div>
+                        <p className="text-sm font-black text-white mb-1 group-hover/item:text-vivid transition-colors uppercase tracking-wider">{s.title}</p>
+                        <p className="text-xs text-white/50 leading-relaxed font-medium">{s.desc}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 relative z-10 w-full lg:w-auto">
               <button
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="btn-shimmer bg-white text-forest px-10 py-5 rounded-2xl font-extrabold hover:scale-105 active:scale-95 shadow-xl transition-all">
+                className="btn-shimmer w-full lg:w-auto bg-white text-forest px-12 py-6 rounded-[2rem] font-black text-lg hover:scale-105 active:scale-95 shadow-2xl transition-all shadow-black/20">
                 Book Free Consultation
               </button>
             </div>

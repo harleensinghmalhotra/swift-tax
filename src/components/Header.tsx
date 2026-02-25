@@ -4,6 +4,7 @@ import { Phone, Menu, X } from 'lucide-react';
 const navLinks = [
   { name: 'Services', href: '#services' },
   { name: 'About', href: '#about' },
+  { name: 'Blog', href: '#' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -18,13 +19,15 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-hdr py-3' : 'bg-white/95 backdrop-blur-sm py-5'
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+      ? 'bg-white shadow-lg py-4 border-b border-gray-100'
+      : 'bg-white py-5'
       }`}>
       <div className="max-w-7xl mx-auto px-5 lg:px-8 flex items-center justify-between">
 
         {/* Logo */}
         <a href="#" className="flex-shrink-0 transition-transform duration-300 hover:scale-105 origin-left">
-          <img src="/New Logo.png" alt="Swift Tax Service" className="h-14 lg:h-16 w-auto" />
+          <img src="/New Logo.png" alt="Swift Tax Service" className="h-16 lg:h-20 w-auto" />
         </a>
 
         {/* Desktop Nav */}

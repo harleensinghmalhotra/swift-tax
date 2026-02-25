@@ -11,7 +11,7 @@ export default function About() {
     <section id="about" className="py-24 bg-cream relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
 
           {/* Left: Image / Visuals */}
           <div className="relative anim-fade-left">
@@ -19,7 +19,7 @@ export default function About() {
               <img
                 src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
                 alt="Founder"
-                className="w-full h-[600px] object-cover transition-transform duration-700 hover:scale-105"
+                className="w-full h-[520px] object-cover object-top transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-forest/60 to-transparent" />
 
